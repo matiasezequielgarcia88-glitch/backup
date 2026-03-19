@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  :root {
+    /* Primary - Deep Forest Green */
+    --primary: 152 45% 25%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Background - Warm off-white */
+    --background: 40 20% 98%;
+    --foreground: 150 10% 15%;
+
+    /* Cards - Clean white */
+    --card: 0 0% 100%;
+    --card-foreground: 150 10% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 10% 15%;
+
+    /* Secondary - Sage green */
+    --secondary: 140 15% 92%;
+    --secondary-foreground: 150 20% 25%;
+
+    /* Muted - Soft gray-green */
+    --muted: 140 10% 94%;
+    --muted-foreground: 150 5% 45%;
+
+    /* Accent - Warm terracotta */
+    --accent: 25 70% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Plant states */
+    --state-mother: 280 60% 45%;
+    --state-mother-foreground: 0 0% 100%;
+    --state-clone: 200 80% 45%;
+    --state-clone-foreground: 0 0% 100%;
+    --state-vegetative: 120 50% 40%;
+    --state-vegetative-foreground: 0 0% 100%;
+    --state-flowering: 320 70% 50%;
+    --state-flowering-foreground: 0 0% 100%;
+
+    /* Success/Warning/Info */
+    --success: 142 70% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+    --info: 200 80% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 140 15% 88%;
+    --input: 140 15% 88%;
+    --ring: 152 45% 25%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar */
+    --sidebar-background: 152 30% 18%;
+    --sidebar-foreground: 140 10% 95%;
+    --sidebar-primary: 152 45% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 152 25% 25%;
+    --sidebar-accent-foreground: 140 10% 95%;
+    --sidebar-border: 152 20% 25%;
+    --sidebar-ring: 152 45% 45%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(152 45% 25%), hsl(152 45% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 70% 50%), hsl(35 80% 55%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(140 15% 98%));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(150 10% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(150 10% 15% / 0.08), 0 2px 4px -2px hsl(150 10% 15% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(150 10% 15% / 0.1), 0 4px 6px -4px hsl(150 10% 15% / 0.05);
+    --shadow-card: 0 2px 8px -2px hsl(150 10% 15% / 0.08), 0 0 0 1px hsl(140 15% 88% / 0.5);
+  }
+
+  .dark {
+    --primary: 152 45% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --background: 150 15% 8%;
+    --foreground: 140 10% 95%;
+
+    --card: 150 15% 12%;
+    --card-foreground: 140 10% 95%;
+
+    --popover: 150 15% 12%;
+    --popover-foreground: 140 10% 95%;
+
+    --secondary: 150 15% 18%;
+    --secondary-foreground: 140 10% 95%;
+
+    --muted: 150 10% 20%;
+    --muted-foreground: 140 5% 60%;
+
+    --accent: 25 70% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 15% 20%;
+    --input: 150 15% 20%;
+    --ring: 152 45% 50%;
+
+    --sidebar-background: 150 20% 6%;
+    --sidebar-foreground: 140 10% 95%;
+    --sidebar-primary: 152 45% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 15% 15%;
+    --sidebar-accent-foreground: 140 10% 95%;
+    --sidebar-border: 150 15% 15%;
+    --sidebar-ring: 152 45% 50%;
+
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.3), 0 0 0 1px hsl(150 15% 20% / 0.5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  .card-elevated {
+    @apply bg-card rounded-xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-card {
+    @apply p-6 rounded-xl bg-card transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .badge-mother {
+    @apply px-2.5 py-1 rounded-full text-xs font-medium;
+    background: hsl(var(--state-mother));
+    color: hsl(var(--state-mother-foreground));
+  }
+
+  .badge-clone {
+    @apply px-2.5 py-1 rounded-full text-xs font-medium;
+    background: hsl(var(--state-clone));
+    color: hsl(var(--state-clone-foreground));
+  }
+
+  .badge-vegetative {
+    @apply px-2.5 py-1 rounded-full text-xs font-medium;
+    background: hsl(var(--state-vegetative));
+    color: hsl(var(--state-vegetative-foreground));
+  }
+
+  .badge-flowering {
+    @apply px-2.5 py-1 rounded-full text-xs font-medium;
+    background: hsl(var(--state-flowering));
+    color: hsl(var(--state-flowering-foreground));
+  }
+
+  .sidebar-gradient {
+    background: var(--gradient-primary);
+  }
+
+  .table-header {
+    @apply bg-muted/50 text-muted-foreground text-xs font-semibold uppercase tracking-wider;
+  }
+
+  .input-search {
+    @apply pl-10 bg-secondary/50 border-0 focus:bg-card focus:ring-2 focus:ring-primary/20 transition-all;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
