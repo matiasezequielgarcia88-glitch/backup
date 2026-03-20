@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { Plus, Search, Trash2, Eye, UserPlus } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useAuth } from '@/contexts/AuthContext';
 
 type Paciente = {
   id: string;
@@ -22,10 +23,13 @@ type Paciente = {
   email: string | null;
   numero_tramite_reprocann: string | null;
   created_at: string;
+  organization_id: string | null;
 };
 
 export default function Pacientes() {
   const queryClient = useQueryClient();
+  const { profile } = useAuth();
+  const orgId = profile?.organization_id;
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Paciente | null>(null);
@@ -41,21 +45,23 @@ export default function Pacientes() {
   });
 
   const { data: pacientes = [], isLoading } = useQuery({
-    queryKey: ['pacientes'],
+    queryKey: ['pacientes', orgId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('pacientes')
         .select('*')
+        .eq('organization_id', orgId!)
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data as Paciente[];
     },
+    enabled: !!orgId,
   });
 
   const { data: entregasByPaciente = {} } = useQuery({
-    queryKey: ['entregas-count'],
+    queryKey: ['entregas-count', orgId],
     queryFn: async () => {
-      const { data, error } = await supabase.from('entregas').select('paciente_id');
+      const { data, error } = await supabase.from('entregas').select('paciente_id').eq('organization_id', orgId!);
       if (error) throw error;
       const counts: Record<string, number> = {};
       data.forEach((e) => {
@@ -63,6 +69,7 @@ export default function Pacientes() {
       });
       return counts;
     },
+    enabled: !!orgId,
   });
 
   const createMutation = useMutation({
@@ -74,11 +81,12 @@ export default function Pacientes() {
         telefono: form.telefono || null,
         email: form.email || null,
         numero_tramite_reprocann: form.numero_tramite_reprocann || null,
+        organization_id: orgId,
       });
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['pacientes'] });
+      queryClient.invalidateQueries({ queryKey: ['pacientes', orgId] });
       toast.success('Paciente registrado correctamente');
       setDialogOpen(false);
       setForm({ dni: '', nombre_apellido: '', localidad: '', telefono: '', email: '', numero_tramite_reprocann: '' });
@@ -98,8 +106,8 @@ export default function Pacientes() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['pacientes'] });
-      queryClient.invalidateQueries({ queryKey: ['entregas-count'] });
+      queryClient.invalidateQueries({ queryKey: ['pacientes', orgId] });
+      queryClient.invalidateQueries({ queryKey: ['entregas-count', orgId] });
       toast.success('Paciente eliminado correctamente');
       setDeleteTarget(null);
     },
